@@ -73,7 +73,7 @@ t=linspace(0,t_sim,step);
 
 %vector inicial de la entrada
 
-t = linspace(0, t_sim, step);
+
 
 u=linspace(0,0,step);
 
