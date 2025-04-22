@@ -6,7 +6,8 @@ close all;
 R = 220;        % Resistencia (Ohm)
 L = 500e-3;       % Inductancia (H)
 C = 2.2e-6;     % Capacitancia (F)
-V0 = 12;       % Voltaje inicial en el capacitor (V)
+V0 = 0;       % Voltaje inicial en el capacitor (V)
+
 I0 = 0;        % Corriente inicial (A)
 
 % Parámetros de simulación
