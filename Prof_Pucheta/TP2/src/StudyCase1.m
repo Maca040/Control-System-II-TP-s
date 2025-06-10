@@ -214,8 +214,8 @@ grid
 Ao = A' 
 Bo = C' 
 Co = B' 
-Qo = diag([1 0.01 0.01])
-Ro = 10;
+Qo = diag([10000 100000 0.1]) %covarianzas del ruido de proceso y de medición
+Ro = 0.0005;
 Ko = lqr(Ao,Bo,Qo,Ro)
 obsStateVector = [ia(1) omega(1) theta(1)]';
 xObs = [0 0 0]'; 
@@ -239,7 +239,7 @@ for i = 1:(Tsim/ti)
     thetaO(i)= xObs(3);
     yO(i) = C*obsStateVector;
     y(i) = Camp(1:3)*stateVec+Camp(4)*integ;
-    xTP = A*xObs+B*u(i)+Ko*(y(:,i)-yO(:,i));
+    xTP = A*xObs+B*u(i)+Ko'*(y(:,i)-yO(:,i));
     xObs = xObs+xTP*ti;
     stateVec = [ia(i) omega(i) theta(i)]';
     integ = zeta(i);
@@ -247,16 +247,16 @@ for i = 1:(Tsim/ti)
 end
 %% 
 % La corriente observada es:
-
-plot(t,iaO,'LineWidth',1.5)
-xlabel('Tiempo [seg]')
-ylabel('Corriente [A]')
-title('Corriente de armadura i_a observada')
-grid
-%% 
+% figure(6)
+% plot(t,iaO,'LineWidth',1.5)
+% xlabel('Tiempo [seg]')
+% ylabel('Corriente [A]')
+% title('Corriente de armadura i_a observada')
+% grid
+% %% 
 % Ahora, para comparar con la real obtenida anteriormente:
 
-
+figure(7)
 plot(t,iaO,'LineWidth',1.5)
 hold on
 plot(t,ia,'LineWidth',1.5)
@@ -272,8 +272,9 @@ hold off
 
 obsError(1) = 0;
 for i = 1:(Tsim/ti)
-    obsError(i) = (realIa.ia(i)-iaO(i));
+    obsError(i) = (ia(i)-iaO(i));
 end
+figure(8)
 plot(t,obsError,'LineWidth',1.5)
 xlabel('Tiempo [seg]')
 ylabel('Error [A]')
