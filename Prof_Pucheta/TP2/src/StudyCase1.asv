@@ -71,9 +71,7 @@ Km = 0.2500481104997174;
      %Matrices
 %xp=Ax+Bu 
 A = [-Ra/Laa -Km/Laa 0 ; Ki/Jm -Bm/Jm 0 ; 0 1 0];  % matriz de estados
-B = [1/Laa 0 ;
-    0 -1/Jm ;
-    0 0];               % matriz de entrada 
+B = [1/Laa 0 ; 0 -1/Jm ; 0 0];               % matriz de entrada 
 C = [0 0 1];                               % matriz de salida                                                       
 D = [0 0];                                % matriz de transmisión directa
 
@@ -217,8 +215,8 @@ C_i = [0 0 1; 1 0 0]
 Ao = A' 
 Bo = C_i' 
 Co = B' 
-Qo = diag([10 1000000 0.01]) %covarianzas del ruido de proceso y de medición
-Ro = diag([0.005,1000])
+Qo = diag([1 1000 0.001]) %covarianzas del ruido de proceso y de medición
+Ro = diag([0.005, 0.001])
 [Ko ,So, Po] = lqr(Ao,Bo,Qo,Ro)
 obsStateVector = [ia(1) omega(1) theta(1)]';
 xObs = [0 0 0]'; 
@@ -243,7 +241,7 @@ for i = 1:(Tsim/ti_ob)
     iaO(i)= xObs(1);
     omegaO(i)= xObs(2);
     thetaO(i)= xObs(3);
-    yO(i) = C*obsStateVector;
+    yO(i) = C_i*obsStateVector;
     y(i) = Camp(1:3)*obsStateVector+Camp(4)*integ;
     xTP = A*xObs+B*u(i)+Ko'*(y(:,i)-yO(:,i));
     xObs = xObs+xTP*ti_ob;
